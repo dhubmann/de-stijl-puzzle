@@ -7,7 +7,7 @@ The goal: turn all colored cells white by rotating them and their neighbors in a
 
 ## Gameplay
 
-- **Grid**: 7×7  
+- **Grid**: adjustable from 4×4 to 9x9
 - **Colors**: Red → Yellow → Blue → White  
 - **Click mechanics**: Clicking a cell rotates the color of that cell **and its four neighbors** (up, down, left, right).  
 - **Goal**: Make all cells white.
