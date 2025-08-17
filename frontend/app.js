@@ -5,7 +5,6 @@ const label2 = document.getElementById('gridSizeLabel2');
 const startBtn = document.getElementById('startGameBtn');
 
 let gridSize = parseInt(slider.value);
-let token = localStorage.getItem('token');
 
 slider.addEventListener('input', () => {
     label.textContent = slider.value;
@@ -13,7 +12,41 @@ slider.addEventListener('input', () => {
     gridSize = parseInt(slider.value);
 });
 
-function renderGrid(gridSize) {
+startBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    console.log("TOKEN: ", token);
+    if (!token) {
+        alert('You must be logged in to start a game.');
+        return;
+    }
+    await startGame();
+});
+
+async function startGame() {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${CONFIG.GAME_API}/start`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ gridSize })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        renderGrid(data.grid);
+        console.log("GRID SIZE: ", gridSize);
+        console.log("GRID: ", data.grid);
+    } else {
+        alert(data.message);
+    }
+} 
+
+function renderGrid(grid) {
     gridElement.innerHTML = ''; // clear existing grid
     gridElement.style.gridTemplateColumns = `repeat(${gridSize}, 0fr)`; // dynamically create columns
 
@@ -29,31 +62,18 @@ function renderGrid(gridSize) {
     }
 }
 
-async function startGame() {
-    const res = await fetch(`${CONFIG.GAME_API}/start`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        },
-        body: JSON.stringify({ gridSize })
-    });
-
-    const data = await res.json();
-    renderGrid(data.grid);
-}
-
 // Handle cell click
 gridElement.addEventListener('click', async (event) => {
     if(!event.target.classList.contains('cell')) return;
     const row = parseInt(event.target.dataset.row);
     const col = parseInt(event.target.dataset.col);
+    const token = localStorage.getItem('token');
 
     const res = await fetch(`${CONFIG.GAME_API}/rotate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ row, col })
     });
@@ -62,15 +82,7 @@ gridElement.addEventListener('click', async (event) => {
     renderGrid(data.grid);
 });
 
-startBtn.addEventListener('click', async () => {
-    if (!token) {
-        alert('You must be logged in to start a game.');
-        return;
-    }
-    await startGame();
-});
-
 function logout() {
     localStorage.removeItem('token');
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 }

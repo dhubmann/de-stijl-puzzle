@@ -48,9 +48,13 @@ function authenticate(req, res, next) {
     const authHeader = req.headers['authorization'];
     if (!authHeader) return res.status(401).json({ message: 'No token provided' });
 
-    jwt.verify(authHeader, SECRET, (err, decoded) => {
+    const token = authHeader.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'No token provided' });
+
+    jwt.verify(token, SECRET, (err, decoded) => {
         if (err) return res.status(500).json({ message: 'Failed to authenticate token' });
         req.userId = decoded.id;
+        //console.log("Authenticated user ID: ", req.userId);
         next();
     });
 }
@@ -61,14 +65,15 @@ app.post('/start', authenticate, (req, res) => {
     if (!gridSize || gridSize < 4) return res.status(400).json({ message: 'Invalid grid size' });
 
     const grid = createGrid(gridSize);
-    games[req.token] = { grid, gridSize };
+    games[req.userId] = { grid, gridSize };
+    //console.log("REQ: ", req.userId);
     res.json({ message: 'Game started', grid });
 });
 
 // Rotate cell
 app.post('/rotate', authenticate, (req, res) => {
     const { row, col } = req.body;
-    const game = games[req.token];
+    const game = games[req.userId];
     if (!game) return res.status(404).json({ message: 'Start a game first' });
 
     const { grid, gridSize } = game;
