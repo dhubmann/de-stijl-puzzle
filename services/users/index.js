@@ -2,15 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
 require('dotenv').config();
 
-const app = express();
 const PORT = process.env.PORT || 3001;
 const SECRET = process.env.JWT_SECRET;
 
-let users = []; // add DB later
-
+const app = express();
+app.use(cors());
 app.use(bodyParser.json());
+
+let users = []; // add DB later
 
 // Register
 app.post('/register', async (req, res) => {

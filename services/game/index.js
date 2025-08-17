@@ -1,12 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 require('dotenv').config();
 
-const app = express();
 const PORT = process.env.PORT || 3002;
 const SECRET = process.env.JWT_SECRET;
 
+const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 const colors = ['red', 'blue', 'yellow', 'white'];

@@ -1,6 +1,3 @@
-const USER_API = 'http://localhost:3001';
-const GAME_API = 'http://localhost:3002';
-
 const gridElement = document.getElementById('grid');
 const slider = document.getElementById('gridSizeSlider');
 const label = document.getElementById('gridSizeLabel');
@@ -16,7 +13,7 @@ slider.addEventListener('input', () => {
     gridSize = parseInt(slider.value);
 });
 
-function renderGrid(grid) {
+function renderGrid(gridSize) {
     gridElement.innerHTML = ''; // clear existing grid
     gridElement.style.gridTemplateColumns = `repeat(${gridSize}, 0fr)`; // dynamically create columns
 
@@ -33,7 +30,7 @@ function renderGrid(grid) {
 }
 
 async function startGame() {
-    const res = await fetch(`${GAME_API}/start`, {
+    const res = await fetch(`${CONFIG.GAME_API}/start`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -52,7 +49,7 @@ gridElement.addEventListener('click', async (event) => {
     const row = parseInt(event.target.dataset.row);
     const col = parseInt(event.target.dataset.col);
 
-    const res = await fetch(`${GAME_API}/rotate`, {
+    const res = await fetch(`${CONFIG.GAME_API}/rotate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -65,8 +62,13 @@ gridElement.addEventListener('click', async (event) => {
     renderGrid(data.grid);
 });
 
-startBtn.addEventListener('click', startGame);
-startGame(); // Start game on load
+startBtn.addEventListener('click', async () => {
+    if (!token) {
+        alert('You must be logged in to start a game.');
+        return;
+    }
+    await startGame();
+});
 
 function logout() {
     localStorage.removeItem('token');
