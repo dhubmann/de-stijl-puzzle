@@ -59,7 +59,7 @@ function createGrid(gridSize) {
 gridElement.addEventListener('click', (event) => {
     if(!event.target.classList.contains('cell')) return;
 
-    const gridSize = parseInt(slider.value);
+    //gridSize = parseInt(slider.value);
     if (event.target.classList.contains('cell')) {
         const cell = event.target;
         rotateCell(cell);
@@ -73,3 +73,12 @@ startBtn.addEventListener('click', () => {
 });
 
 createGrid(parseInt(slider.value));
+
+function logout() {
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+}
+
+if(!localStorage.getItem('token')) {
+    window.location.href = 'login.html';
+}
