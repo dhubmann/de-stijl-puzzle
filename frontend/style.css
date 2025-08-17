@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #fff;
+}
+
+#grid {
+    display: grid;
+    gap: 0px; /* space between cells */
+    margin-top: 20px;
+}
+
+.cell {
+    width: 50px;  /* temporary, will adjust dynamically */
+    height: 50px;
+    border: 1px solid #000;
+    box-sizing: border-box;
+}
