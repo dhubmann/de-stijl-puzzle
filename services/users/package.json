@@ -1,17 +1,9 @@
-{
-  "name": "de-stijl-puzzle",
+{ "name": "user-service",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "live-server": "^1.2.2"
-  },
-  "keywords": [],
-  "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",

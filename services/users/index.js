@@ -12,8 +12,6 @@ let users = []; // add DB later
 
 app.use(bodyParser.json());
 
-app.use(express.static('public'));
-
 // Register
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
