@@ -8,15 +8,30 @@ The goal: turn all colored cells white by rotating them and their neighbors in a
 ## Gameplay
 
 - **Grid**: adjustable from 4×4 to 9x9
-- **Colors**: Red → Yellow → Blue → White  
-- **Click mechanics**: Clicking a cell rotates the color of that cell **and its four neighbors** (up, down, left, right).  
+- **Colors**: Red → Blue → Yellow → White  
+- **Click mechanics**: Clicking a cell rotates the color of that cell and its four neighbors (up, down, left, right).  
 - **Goal**: Make all cells white.
 
 ---
 
-## Project Setup
+## Project Architecture
 
-1. git clone https://github.com/dhubmann/de-stijl-puzzle.git
-2. cd de-stijl-puzzle
-3. npm install
-4. npm start
+This project is structured as a set of microservices (for personal practice purposes).
+
+- **Frontend (port 3000)** → Game UI  
+- **User Service (port 3001)** → Handles registration & login 
+- **Game Service (port 3002)** → Handles game logic 
+- *(Further services can be added later)*
+
+---
+
+## Run with Docker
+
+Make sure Docker and Docker Compose are installed. Then:
+
+git clone https://github.com/dhubmann/de-stijl-puzzle.git
+
+cd de-stijl-puzzle
+
+# Build and start all services
+docker-compose up --build
