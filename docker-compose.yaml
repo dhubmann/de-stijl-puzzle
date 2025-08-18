@@ -1,0 +1,23 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - users
+      - game
+
+  users:
+    build: ./services/users
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=hWaGsIkBm456
+
+  game:
+    build: ./services/game
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
